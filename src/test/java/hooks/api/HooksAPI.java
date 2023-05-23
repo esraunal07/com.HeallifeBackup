@@ -19,9 +19,9 @@ public class HooksAPI {
     }
 
     @Before(order = 1)
-    public void beforeGenerateToken(String email,String password){
+    public void beforeGenerateToken(){
 
-        token = Authentication.generateToken(ConfigReader.getProperty(email),ConfigReader.getProperty(password));
+        token = Authentication.generateToken(ConfigReader.getProperty("emailBerivan"),ConfigReader.getProperty("passwordBerivan"));
 
     }
 
