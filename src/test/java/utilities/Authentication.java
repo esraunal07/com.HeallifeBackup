@@ -19,12 +19,12 @@ public class Authentication {
 
         spec = new RequestSpecBuilder().setBaseUri(ConfigReader.getProperty("base_url")).build();
 
-        spec.pathParams("pp1","api","pp2","login");
+        spec.pathParams("pp1","api","pp2","getToken");
 
         Map<String,Object> dataCredential = new HashMap<>();
 
-        dataCredential.put("email",ConfigReader.getProperty(email));
-        dataCredential.put("password",ConfigReader.getProperty(password));
+        dataCredential.put("email",email);
+        dataCredential.put("password",password);
 
         Response response = given()
                 .spec(spec)
@@ -36,6 +36,7 @@ public class Authentication {
         JsonPath respJP = response.jsonPath();
 
         String token = respJP.getString("token");
+        System.out.println(token);
 
         return token;
     }

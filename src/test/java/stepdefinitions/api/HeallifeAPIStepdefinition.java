@@ -29,7 +29,7 @@ public class HeallifeAPIStepdefinition {
         tempPath.deleteCharAt(tempPath.lastIndexOf("{"));
         tempPath.deleteCharAt(tempPath.lastIndexOf("/"));
 
-        // System.out.println("tempPath : " + tempPath);
+         System.out.println("tempPath : " + tempPath);
 
         fullPath = tempPath.toString();
     }
