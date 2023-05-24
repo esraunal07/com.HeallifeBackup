@@ -14,8 +14,8 @@ import org.junit.runner.RunWith;
                 "rerun:target/failedRerun.txt"
         },
         features = "src/test/resources/features/APIFeature",
-        glue = {"stepDefinitions/api", "hooks/api"},
-        tags = "@Beri",
+        glue = {"stepdefinitions/api", "hooks/api"},
+        tags = "@wip",
         dryRun = false
 )
 public class RunnerAPI {
