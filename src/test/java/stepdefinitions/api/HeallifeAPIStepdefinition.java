@@ -78,12 +78,17 @@ public class HeallifeAPIStepdefinition {
 
     @Then("Api kullanicisi stafList te id si {string} olan kaydin name {string} surname {string} employee_id {string} oldugunu dogrular")
     public void apiKullanicisiStafListTeIdSiOlanKaydinNameSurnameEmployee_idOldugunuDogrular(String id, String name, String surname, String employee_id) {
-        HeallifeMethods.getResponse(fullPath);
+        response = given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization","Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .header("Accept","application/json")
+                .when().get(fullPath);
 
         JsonPath resJp = response.jsonPath();
-        Assert.assertEquals(id,resJp.get("lists[3].id"));
-        Assert.assertEquals(name,resJp.get("lists[3].name"));
-        Assert.assertEquals(surname,resJp.get("lists[3].surname"));
-        Assert.assertEquals(employee_id,resJp.get("lists[3].employee_id"));
+        Assert.assertEquals(id,resJp.get("lists[2].id"));
+        Assert.assertEquals(name,resJp.get("lists[2].name"));
+        Assert.assertEquals(surname,resJp.get("lists[2].surname"));
+        Assert.assertEquals(employee_id,resJp.get("lists[2].employee_id"));
     }
 }
