@@ -9,3 +9,8 @@ Feature: US_02 Bir yönetici olarak API baglantisi üzerinden Staff List'e erise
 
     Given Api kullanicisi "api/staffList" path parametreleri set eder
     Then Api kullanicisi "staffList" icin gonderdigi yanlis get Request sonucunda donen status kodunun 403 oldugunu dogrular
+
+    Scenario: response body icerisinde istenenlist icerikleri dogrulanmali
+
+      Given Api kullanicisi "api/staffList" path parametreleri set eder
+      Then Api kullanicisi stafList te id si "4" olan kaydin name "Sansa" surname "Gomez" employee_id "9008" oldugunu dogrular

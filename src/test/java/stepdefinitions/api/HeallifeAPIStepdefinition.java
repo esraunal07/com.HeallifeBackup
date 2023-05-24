@@ -8,6 +8,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.junit.Assert;
+import utilities.HeallifeMethods;
 
 import static io.restassured.RestAssured.given;
 
@@ -73,5 +74,16 @@ public class HeallifeAPIStepdefinition {
         Assert.assertEquals(basarisizStatusKod,response.getStatusCode());
         JsonPath respJP = response.jsonPath();
         Assert.assertEquals("failed",respJP.get("message"));
+    }
+
+    @Then("Api kullanicisi stafList te id si {string} olan kaydin name {string} surname {string} employee_id {string} oldugunu dogrular")
+    public void apiKullanicisiStafListTeIdSiOlanKaydinNameSurnameEmployee_idOldugunuDogrular(String id, String name, String surname, String employee_id) {
+        HeallifeMethods.getResponse(fullPath);
+
+        JsonPath resJp = response.jsonPath();
+        Assert.assertEquals(id,resJp.get("lists[3].id"));
+        Assert.assertEquals(name,resJp.get("lists[3].name"));
+        Assert.assertEquals(surname,resJp.get("lists[3].surname"));
+        Assert.assertEquals(employee_id,resJp.get("lists[3].employee_id"));
     }
 }
