@@ -44,9 +44,9 @@ public class HeallifeAPIStepdefinition {
         fullPath = tempPath.toString();
     }
 
-    @Then("Api kullanicisi staffList icin gonderdigi dogru get Request sonucunda donen status kodunun ikiyuz oldugunu dogrular")
-    public void apiKullanicisiStaffListIcinGonderdigiDogruGetRequestSonucundaDonenStatusKodununIkiyuzOldugunuDogrular() {
-    response = given()
+    @Then("Api kullanicisi {string} icin gonderdigi dogru get Request sonucunda donen status kodunun {int} oldugunu dogrular")
+    public void apiKullanicisiIcinGonderdigiDogruGetRequestSonucundaDonenStatusKodununOldugunuDogrular(String arg0, int arg1) {
+        response = given()
                 .spec(HooksAPI.spec)
                 .headers("Authorization","Bearer " + HooksAPI.token)
                 .contentType(ContentType.JSON)
@@ -57,9 +57,8 @@ public class HeallifeAPIStepdefinition {
         Assert.assertEquals(basariliStatusKod,response.getStatusCode());
     }
 
-    @Then("Api kullanicisi staffList icin gonderdigi yanlis get Request sonucunda donen status kodunun dortyuzuc oldugunu dogrular")
-    public void apiKullanicisiStaffListIcinGonderdigiYanlisGetRequestSonucundaDonenStatusKodununDortyuzucOldugunuDogrular() {
-        //HeallifeMethods.getResponse(fullPath);
+    @Then("Api kullanicisi {string} icin gonderdigi yanlis get Request sonucunda donen status kodunun {int} oldugunu dogrular")
+    public void apiKullanicisiIcinGonderdigiYanlisGetRequestSonucundaDonenStatusKodununOldugunuDogrular(String arg0, int arg1) {
         response = given()
                 .spec(HooksAPI.spec)
                 .headers("Authorization","Bearer " + HooksAPI.token)
@@ -67,6 +66,7 @@ public class HeallifeAPIStepdefinition {
                 .header("Accept","application/json")
                 .when().get(fullPath);
         response.prettyPrint();
-        Assert.assertEquals(basarisizStatusKod,response.getStatusCode());
+        //HeallifeMethods.getResponse(fullPath);
+        Assert.assertEquals(basariliStatusKod,response.getStatusCode());
     }
 }
