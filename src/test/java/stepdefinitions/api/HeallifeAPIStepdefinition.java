@@ -4,6 +4,7 @@ import hooks.api.HooksAPI;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -55,6 +56,8 @@ public class HeallifeAPIStepdefinition {
         response.prettyPrint();
         //HeallifeMethods.getResponse(fullPath);
         Assert.assertEquals(basariliStatusKod,response.getStatusCode());
+        JsonPath respJP = response.jsonPath();
+        Assert.assertEquals("Success",respJP.get("message"));
     }
 
     @Then("Api kullanicisi {string} icin gonderdigi yanlis get Request sonucunda donen status kodunun {int} oldugunu dogrular")
@@ -68,5 +71,7 @@ public class HeallifeAPIStepdefinition {
         response.prettyPrint();
         //HeallifeMethods.getResponse(fullPath);
         Assert.assertEquals(basarisizStatusKod,response.getStatusCode());
+        JsonPath respJP = response.jsonPath();
+        Assert.assertEquals("failed",respJP.get("message"));
     }
 }
