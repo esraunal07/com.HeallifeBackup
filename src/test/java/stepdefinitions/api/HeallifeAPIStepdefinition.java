@@ -67,6 +67,6 @@ public class HeallifeAPIStepdefinition {
                 .when().get(fullPath);
         response.prettyPrint();
         //HeallifeMethods.getResponse(fullPath);
-        Assert.assertEquals(basariliStatusKod,response.getStatusCode());
+        Assert.assertEquals(basarisizStatusKod,response.getStatusCode());
     }
 }
