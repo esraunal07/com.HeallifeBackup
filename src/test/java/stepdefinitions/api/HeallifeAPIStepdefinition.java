@@ -253,6 +253,29 @@ public class HeallifeAPIStepdefinition {
 
 
     }
+
+    @Then("Response body icindeki id, visitors_purpose, description, created_at dogrula")
+    public void response_body_icindeki_id_visitors_purpose_description_created_at_dogrula() {
+
+        JSONObject reqBodyJson = new JSONObject();
+        reqBodyJson.put("id","4");
+        response = given()
+                .spec(HooksAPI.spec)
+                .contentType(ContentType.JSON)
+                .header("Authorization","Bearer " + HooksAPI.token)
+                .when()
+                .body(reqBodyJson.toString())
+                .get(fullPath);
+        response.prettyPrint();
+
+        JsonPath respJP = response.jsonPath();
+        assertEquals(respJP.get("lists.id"),"4");
+        assertEquals(respJP.get("lists.visitors_purpose"),"Visit");
+        assertEquals(respJP.get("lists.description"),"Visitor centers used to provide fairly basic information about the place, corporation or event they are celebrating, acting more as the entry way to a place. The role of the visitor center has been rapidly evolving over the past 10 years to become more of an experience and to tell the story of the place or brand it represents. Many have become destinations and experiences in their own right.");
+        assertEquals(respJP.get("lists.created_at"),"2021-10-29 01:25:09");
+
+    }
+
 }
 
 
