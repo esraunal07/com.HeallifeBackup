@@ -10,6 +10,8 @@ import org.json.JSONObject;
 import org.junit.Assert;
 import utilities.HeallifeMethods;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 
 public class HeallifeAPIStepdefinition {
@@ -76,19 +78,23 @@ public class HeallifeAPIStepdefinition {
         Assert.assertEquals("failed",respJP.get("message"));
     }
 
-    @Then("Api kullanicisi stafList te id si {string} olan kaydin name {string} surname {string} employee_id {string} oldugunu dogrular")
-    public void apiKullanicisiStafListTeIdSiOlanKaydinNameSurnameEmployee_idOldugunuDogrular(String id, String name, String surname, String employee_id) {
+    @Then("Response body icindeki list icerigi {string} olan kisinin isminin {string} soyisminin  {string} employe id'sinin {string} oldugunu dogrular")
+    public void responseBodyIcindekiListIcerigiOlanKisininIsmininSoyismininEmployeIdSininOldugunuDogrular(String id, String name, String surname, String employee_id) {
         response = given()
                 .spec(HooksAPI.spec)
                 .headers("Authorization","Bearer " + HooksAPI.token)
                 .contentType(ContentType.JSON)
                 .header("Accept","application/json")
                 .when().get(fullPath);
-
         JsonPath resJp = response.jsonPath();
-        Assert.assertEquals(id,resJp.get("lists[2].id"));
-        Assert.assertEquals(name,resJp.get("lists[2].name"));
-        Assert.assertEquals(surname,resJp.get("lists[2].surname"));
-        Assert.assertEquals(employee_id,resJp.get("lists[2].employee_id"));
+        List<String> listIcerigi = resJp.getList("lists");
+        //int index = listIcerigi.indexOf(id);
+        for (int i = 0; i < listIcerigi.size(); i++) {
+            if (id.equals(i)){
+                Assert.assertEquals(name,resJp.getList("lists["+i+"].name"));
+                Assert.assertEquals(surname,resJp.get("lists["+i+"].surname"));
+                Assert.assertEquals(employee_id,resJp.get("lists["+i+"].employee_id"));
+            }
+        }
     }
 }
