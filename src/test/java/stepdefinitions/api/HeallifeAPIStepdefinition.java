@@ -2,6 +2,7 @@ package stepdefinitions.api;
 
 import hooks.api.HooksAPI;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.http.ContentType;
@@ -273,9 +274,55 @@ public class HeallifeAPIStepdefinition {
         assertEquals(respJP.get("lists.visitors_purpose"),"Visit");
         assertEquals(respJP.get("lists.description"),"Visitor centers used to provide fairly basic information about the place, corporation or event they are celebrating, acting more as the entry way to a place. The role of the visitor center has been rapidly evolving over the past 10 years to become more of an experience and to tell the story of the place or brand it represents. Many have become destinations and experiences in their own right.");
         assertEquals(respJP.get("lists.created_at"),"2021-10-29 01:25:09");
-
     }
 
+
+    //////////////Esra US_01///////////////////////////////////
+    @Then("Api kullanicisi id'si {int} olan kaydin patient_name: {string}, expected datasi hazirlanir")
+    public void apiKullanicisiIdSiOlanKaydinPatient_nameExpectedDatasiHazirlanir(int id, String name) {
+        /*{
+        "id": "1",
+                "patient_name": "John Smith",
+                "patient_id": "6"
+    }
+ */
+        JSONObject expecteddataJSon = new JSONObject();
+        expecteddataJSon.put("id","id");
+        expecteddataJSon.put("patient_name",name);
+
+        response = given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization","Bearer "+HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(expecteddataJSon.toString())
+                .get(fullPath);
+        response.prettyPrint() ;
+    }
+
+    @Then("Api kullanicisi Response body List gormek icin Get request gonderir")
+    public void apiKullanicisiResponseBodyListGormekIcinGetRequestGonderir() {
+        response =  given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(fullPath);
+        response.prettyPrint();
+    }
+    @Then("Api kullanicisi  donen response body icindeki id'si {string} olan kaydin patient_name: {string}  oldugunu dogrular")
+    public void apiKullanicisiDonenResponseBodyIcindekiIdSiOlanKaydinPatient_nameOldugunuDogrular(String arg0, String arg1) {
+        JsonPath resJp = response.jsonPath();
+        assertEquals(arg0, resJp.get("lists[0].id") );
+        assertEquals(arg1, resJp.get("lists[0].patient_name") );
+    }
+
+    @And("Api kullanicisi donen response bodysinin id'si {string} olanin patient_id: {string} oldugu dogrular")
+    public void apiKullanicisiDonenResponseBodysininIdSiOlaninPatient_idOlduguDogrular(String arg0, String arg1) {
+        JsonPath resJp = response.jsonPath();
+        assertEquals(arg0, resJp.get("lists[10].id") );
+        assertEquals(arg1, resJp.get("lists[10].patient_id") );
+    }
 }
 
 
