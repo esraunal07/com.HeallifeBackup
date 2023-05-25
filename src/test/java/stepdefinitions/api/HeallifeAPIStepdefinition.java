@@ -187,4 +187,72 @@ public class HeallifeAPIStepdefinition {
 
         assertEquals("kalbi kirilmis", resJp.get("lists[54].visitors_purpose") );
     }
+
+
+    // -------------------------TC_01 _ US_15 ------------------------------------
+    @Then("Api kullanicisi {string} icin gonderdigi dogru id iceren bir GET body sonucunda dönen status code in ikiyuz oldugunu dogrular ve response body deki message bilgisinin Success oldugu dogrulanmali")
+    public void apiKullanicisiIcinGonderdigiDogruIdIcerenBirGETBodySonucundaDönenStatusCodeInIkiyuzOldugunuDogrularVeResponseBodyDekiMessageBilgisininSuccessOlduguDogrulanmali(String arg0) {
+
+        reqBodyJson = new JSONObject();
+        reqBodyJson.put("id", "4");
+        response = given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(reqBodyJson.toString()).get(fullPath);
+        response.prettyPrint();
+        assertEquals(basariliStatusKod, response.getStatusCode());
+
+        JsonPath respJP = response.jsonPath();
+        assertEquals("Success", respJP.get("message"));
+
+    }
+
+    // -------------------------TC_02 _ US_15 ------------------------------------
+    @Then("Api kullanicisi {string} icin gonderdigi gecersiz id iceren bir GET body gönderildiginde dönen status codein {int} oldugu ve response bodydeki message bilgisinin {string} oldugu dogrulanmali")
+    public void apiKullanicisiIcinGonderdigiGecersizIdIcerenBirGETBodyGönderildigindeDönenStatusCodeinOlduguVeResponseBodydekiMessageBilgisininOlduguDogrulanmali(String arg0, int arg1, String arg2) {
+        reqBodyJson = new JSONObject();
+        reqBodyJson.put("id", "25");
+        response = given()
+                .spec(HooksAPI.spec)
+                .headers("Authorization", "Bearer " + HooksAPI.token)
+                .contentType(ContentType.JSON)
+                .header("Accept", "application/json")
+                .body(reqBodyJson.toString())
+                .when().get(fullPath);
+        response.prettyPrint();
+
+        org.testng.Assert.assertEquals(basarisizStatusKod, response.getStatusCode());
+        JsonPath respJP = response.jsonPath();
+        org.testng.Assert.assertEquals("failed", respJP.get("message"));
+    }
+
+    // -------------------------TC_03 _ US_15 ------------------------------------
+
+    @Then("Api kullanicisi response body icindeki {string} {string} {string} {string} datalarini dogrular")
+    public void apiKullanicisiResponseBodyIcindekiDatalariniDogrular(String id, String name, String is_blood_group, String created_at) {
+
+        JSONObject reqBodyJson = new JSONObject();
+        reqBodyJson.put("id","4");
+        response = given()
+                .spec(HooksAPI.spec)
+                .contentType(ContentType.JSON)
+                .header("Authorization","Bearer " + HooksAPI.token)
+                .when()
+                .body(reqBodyJson.toString())
+                .get(fullPath);
+        response.prettyPrint();
+
+        JsonPath respJP = response.jsonPath();
+        assertEquals(respJP.get("lists.id"),id);
+        assertEquals(respJP.get("lists.name"),name);
+        assertEquals(respJP.get("lists.is_blood_group"),is_blood_group);
+        assertEquals(respJP.get("lists.created_at"),created_at);
+
+
+
+    }
 }
+
+
