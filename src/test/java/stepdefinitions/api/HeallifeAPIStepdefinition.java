@@ -120,6 +120,11 @@ public class HeallifeAPIStepdefinition {
                 .when()
                 .body(reqBodyJson.toString())
                 .post(fullPath);
+
+       /* JsonPath resJPath= response.jsonPath();
+        System.out.println(resJPath.get("lists.id").toString());
+*/
+
     }
     @Then("Api kullanicisi visitorsPurposeAdd donen status code in {int} oldugu ve response body deki message bilgisinin Success oldugu dogrulanmali")
     public void api_kullanicisi_visitorsPurposeAdd_donen_status_code_in_oldugu_ve_response_body_deki_message_bilgisinin_success_oldugu_dogrulanmali(Integer int1) {
