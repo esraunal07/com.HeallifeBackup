@@ -27,6 +27,8 @@ public class HeallifeAPIStepdefinition {
     JSONObject reqBodyJson;
     int basariliStatusKod= 200;
     int basarisizStatusKod = 403;
+    public String exception;
+    String basarisizExceptionStatusKod ="403";
     Response response ;
 
 
@@ -71,17 +73,21 @@ public class HeallifeAPIStepdefinition {
 
     @Then("Api kullanicisi {string} icin gonderdigi yanlis get Request sonucunda donen status kodunun {int} oldugunu dogrular")
     public void apiKullanicisiIcinGonderdigiYanlisGetRequestSonucundaDonenStatusKodununOldugunuDogrular(String arg0, int arg1) {
-        response = given()
-                .spec(HooksAPI.spec)
-                .headers("Authorization","Bearer " + HooksAPI.token)
-                .contentType(ContentType.JSON)
-                .header("Accept","application/json")
-                .when().get(fullPath);
-        response.prettyPrint();
-        //HeallifeMethods.getResponse(fullPath);
-        assertEquals(basarisizStatusKod,response.getStatusCode());
-        JsonPath respJP = response.jsonPath();
-        assertEquals("failed",respJP.get("message"));
+        try {
+            response = given()
+                    .spec(HooksAPI.spec)
+                    .headers("Authorization","Bearer" + HooksAPI.token)
+                    .contentType(ContentType.JSON)
+                    .header("Accept","application/json")
+                    .when().get(fullPath);
+            response.prettyPrint();
+        } catch (Exception e) {
+            exception = e.getMessage();
+        }
+
+        System.out.println(exception);
+        Assert.assertTrue(exception.contains(basarisizExceptionStatusKod));
+        Assert.assertTrue(exception.contains("Forbidden"));
     }
 
     @Then("Response body icindeki list icerigi {string} olan kisinin isminin {string} soyisminin  {string} employe id'sinin {string} oldugunu dogrular")
